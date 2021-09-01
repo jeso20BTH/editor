@@ -7,6 +7,85 @@
   pointer-events: none;
 }
 
+body {
+    background-color: #b3bbc3;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #222f3e;
+    color: #e8e8e8;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #222f3e;
+    color: #e8e8e8;
+    text-align: center;
+    font-style: italic;
+}
+
+.header-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 10vh 2em 2em;
+    width: 80%;
+    background-color: #98a4b0;
+    min-height: 80vh;
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    background-color: white;
+}
+
+.toolbar .misc {
+    margin: 0;
+    padding: 0.15em 0.25em;
+    border-right: 1px solid #ccc;
+}
+
+.button {
+    padding: 0.2em;
+    margin: 0;
+    display: flex;
+    font: 400 13.3333px Arial;
+    font-size: 14px;
+    color: #222f3e;
+}
+
+.button-text {
+    margin: auto 0;
+}
+
+.button:hover {
+    background-color: #dee0e2;
+    border-radius: 5%;
+}
+
+.button i,
+.button p {
+    margin: 0;
+    padding: 0 0.2em;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
