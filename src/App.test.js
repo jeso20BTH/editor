@@ -22,13 +22,16 @@ describe("App.js testing", () => {
         expect(wrapper.find('.header-title').text()).toContain('Editor of the people');
     });
 
-    it('Got a placeholder title to start with', () => {
+    it('Title change on input', () => {
         const wrapper = mount((<App />));
         // console.log(wrapper.debug());
 
-        let placeholder = wrapper.find('input').at(0).props().placeholder
+        let placeholder = wrapper.find('input').at(0);
 
-        expect(placeholder).toEqual('Enter an name')
+        expect(placeholder.props().value).toEqual('');
+        placeholder.simulate('change', { target: { value: 'a'} });
+        placeholder.simulate('keydown', { keyCode: 65 });
+        expect(wrapper.find('input').at(0).props().value).toEqual('a');
     });
 
     it('A click on open button should loads documents', async () => {
