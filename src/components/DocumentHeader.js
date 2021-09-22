@@ -8,7 +8,7 @@ export default function DocumentHeader(props) {
                 type="text"
                 value={props.title}
                 onChange={props.headerChange}
-                placeholder="Enter an name"
+                placeholder="Enter a name"
             />
         </div>
     );
