@@ -9,15 +9,29 @@ export default function OpenMenu(props) {
                     <tr>
                         <th>Name</th>
                         <th>Last updated</th>
+                        <th>Option</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {props.documents.map(function(document, index) {
+                    {props.documents.owner.map(function(document, index) {
                         return Document({
                             _id: document._id,
                             name: document.name,
                             date: document.date,
-                            open: props.open
+                            open: props.open,
+                            deleteDocument: props.deleteDocument,
+                            getAccessDocument: props.getAccessDocument,
+                            type: 'owner'
+                        }, index);
+                    })}
+                    {props.documents.access.map(function(document, index) {
+                        return Document({
+                            _id: document._id,
+                            owner: document.owner,
+                            name: document.name,
+                            date: document.date,
+                            open: props.open,
+                            type: 'access'
                         }, index);
                     })}
                 </tbody>

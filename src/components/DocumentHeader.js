@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function DocumentHeader(props) {
-    // console.log(props);
     return (
         <div className="documentHeader">
             <input

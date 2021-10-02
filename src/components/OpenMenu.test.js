@@ -1,4 +1,4 @@
-/* global test*/
+/* global expect*/
 
 import { render, screen } from '@testing-library/react';
 import OpenMenu from './OpenMenu';
