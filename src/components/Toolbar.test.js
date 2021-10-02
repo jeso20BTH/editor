@@ -5,7 +5,16 @@ import Toolbar from './Toolbar';
 
 describe("Tests for rendering button", () => {
     it('Got correct button name', () => {
-        render(<Toolbar buttons={[{icon: 'save', name: 'Save'}]}/>);
+        let buttons = {
+            misc: [
+                {
+                    icon: 'save',
+                    name: 'Save'
+                }
+            ]
+        }
+
+        render(<Toolbar buttons={buttons}/>);
         const documentName = screen.getByText(/Save/);
 
         expect(documentName).toBeInTheDocument();

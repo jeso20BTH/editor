@@ -9,7 +9,7 @@ export default function LoginLink(props) {
             className="link"
             to={`${props.siteUrl}/login`}
         >
-            <button className='nav-button'>
+            <button className='nav-button' id='login-link-btn'>
                 <div className='center-column'>
                     <i className="material-icons-outlined">lock</i>
                 </div>
