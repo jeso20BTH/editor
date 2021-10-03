@@ -28,7 +28,7 @@ describe('App.js testing', () => {
         expect(wrapper.find('input').at(0).props().value).toEqual('a');
     });
 
-    it('A click on login button shall take you to login page.', async () => {
+    it('A click on login button shall take you to login page.', () => {
         const wrapper = mount((<App />));
 
         let button = wrapper.find('.link');
@@ -41,7 +41,7 @@ describe('App.js testing', () => {
         // expect(dataRow.find('td').at(0).text()).toEqual('test');
     });
 
-    it('An unlogged in user should not be able to see an toolbar with open, new and save buttons.', async () => {
+    it('An unlogged in user should not be able to see an toolbar with open, new and save buttons.', () => {
         const wrapper = mount((<App />));
 
         expect(wrapper.contains(<Toolbar />)).toBe(false);

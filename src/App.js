@@ -205,8 +205,14 @@ export default class App extends React.Component {
             documentId: documentId
         };
 
-        let response = await apiDelete(
+        await apiDelete(
             `${that.state.baseurl}/db/document/delete`,
+            body,
+            that.state.token,
+        );
+
+        let response = await apiPost(
+            `${that.state.baseurl}/db/document`,
             body,
             that.state.token,
         );
