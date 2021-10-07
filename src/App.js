@@ -46,8 +46,9 @@ export default class App extends React.Component {
             name: null,
             password: null,
             baseurl: 'https://jsramverk-editor-jeso20.azurewebsites.net',
-            // siteUrl: '~jeso20/editor',
             siteUrl: '/~jeso20/editor',
+            // baseurl: 'http://localhost:1337',
+            // siteUrl: '',
             docTitle: '',
             documentId: null,
             status: 'documents gone',
@@ -147,20 +148,36 @@ export default class App extends React.Component {
     openMenu = async () => {
         let that = this;
 
-        let body = {
-            _id: that.state.userId
-        };
+        let body = JSON.stringify({
+            query: `{
+                documents(userId: "${that.state.userId}") {
+                    owner {
+                        _id
+                        name
+                        html
+                    }
+                    access {
+                        _id
+                        documents {
+                            _id
+                            name
+                            html
+                        }
+                    }
+                }
+            }`
+        });
 
         let response = await apiPost(
-            `${that.state.baseurl}/db/document`,
+            `${that.state.baseurl}/graphql`,
             body,
-            that.state.token,
+            that.state.token
         );
 
 
         that.setState({
             status: 'documents',
-            documents: response
+            documents: response.data.documents
         });
     }
 
@@ -169,14 +186,20 @@ export default class App extends React.Component {
 
         let oldId = that.state.documentId;
 
-        let doc = await that.state.documents.owner.filter( await function(document) {
+        let doc = null;
+
+        doc = await that.state.documents.owner.filter( await function(document) {
             return document._id === e.target.parentElement.id;
         })[0];
 
         if (!doc) {
-            doc = await that.state.documents.access.filter( await function(document) {
-                return document._id === e.target.parentElement.id;
-            })[0];
+            that.state.documents.access.map((user) => {
+                user.documents.map((userDoc) => {
+                    if (userDoc._id === e.target.parentElement.id) {
+                        doc = userDoc;
+                    }
+                });
+            });
         }
 
         that.setState({
@@ -193,6 +216,8 @@ export default class App extends React.Component {
         if (that.editorRef.current) {
             that.editorRef.current.setContent((doc.html) ? doc.html : '');
         }
+
+        doc = null;
     }
 
     deleteDocument = async (e) => {

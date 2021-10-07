@@ -13,26 +13,28 @@ export default function OpenMenu(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.documents.owner.map(function(document, index) {
+                    {props.documents.owner.map(function(doc, index) {
                         return Document({
-                            _id: document._id,
-                            name: document.name,
-                            date: document.date,
+                            _id: doc._id,
+                            name: doc.name,
+                            date: doc.date,
                             open: props.open,
                             deleteDocument: props.deleteDocument,
                             getAccessDocument: props.getAccessDocument,
                             type: 'owner'
                         }, index);
                     })}
-                    {props.documents.access.map(function(document, index) {
-                        return Document({
-                            _id: document._id,
-                            owner: document.owner,
-                            name: document.name,
-                            date: document.date,
-                            open: props.open,
-                            type: 'access'
-                        }, index);
+                    {props.documents.access.map(function(user) {
+                        return user.documents.map(function(doc, index) {
+                            return Document({
+                                _id: doc._id,
+                                owner: user._id,
+                                name: doc.name,
+                                date: doc.date,
+                                open: props.open,
+                                type: 'access'
+                            }, index);
+                        });
                     })}
                 </tbody>
             </table>
