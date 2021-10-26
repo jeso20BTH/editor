@@ -5,7 +5,8 @@ export default function Document(props, index) {
         <tr id={props._id} key={index} className="document">
             <td onClick={props.open}>{props.name}</td>
             <td >{props.date}</td>
-            {(props.type === 'owner') ?
+            <td>{props.type}</td>
+            {(props.docType === 'owner') ?
                 <>
                     <td>
                         <i onClick={props.deleteDocument} className='material-icons-outlined'>

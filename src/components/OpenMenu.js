@@ -2,13 +2,16 @@ import React from 'react';
 import Document from './Document';
 
 export default function OpenMenu(props) {
+    let className = (props.editorType === 'text') ? props.status : `${props.status} dark`;
+
     return (
-        <div className={props.status} >
+        <div className={className} >
             <table>
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Last updated</th>
+                        <th>Type</th>
                         <th>Option</th>
                     </tr>
                 </thead>
@@ -21,7 +24,8 @@ export default function OpenMenu(props) {
                             open: props.open,
                             deleteDocument: props.deleteDocument,
                             getAccessDocument: props.getAccessDocument,
-                            type: 'owner'
+                            type: doc.type,
+                            userType: 'owner'
                         }, index);
                     })}
                     {props.documents.access.map(function(user) {
@@ -32,7 +36,8 @@ export default function OpenMenu(props) {
                                 name: doc.name,
                                 date: doc.date,
                                 open: props.open,
-                                type: 'access'
+                                type: doc.type,
+                                userType: 'access'
                             }, index);
                         });
                     })}
