@@ -8,7 +8,7 @@ export default async function apiPost(url, body, token=null) {
             headers: {
                 'x-access-token': token,
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                'Accept': 'application/pdf',
             }
         };
 

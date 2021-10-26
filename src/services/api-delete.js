@@ -22,8 +22,5 @@ export default async function apiDelete(url, body, token=null) {
         );
     }
 
-
-
-
-    return response.data;
+    return response;
 }

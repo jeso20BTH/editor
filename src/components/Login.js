@@ -1,15 +1,25 @@
 import React from 'react';
 import {
-    Link
+    Link,
+    useLocation
 } from 'react-router-dom';
 
 export default function Login(props) {
+    const search = useLocation().search;
+
+    const email = new URLSearchParams(search).get('email');
+
     return (
         <div className='formdiv'>
             <form>
                 <span>Login</span>
                 <div className='formrow'>
-                    <input type='email' placeholder='E-mail' onChange={props.emailChange}/>
+                    <input
+                        type='email'
+                        placeholder='E-mail'
+                        onChange={props.emailChange}
+                        value={(email) ? email : (props.stateEmail) ? props.stateEmail : ''}
+                    />
                 </div>
                 <div className='formrow'>
                     <input type='password' placeholder='Password' onChange={props.passwordChange}/>
