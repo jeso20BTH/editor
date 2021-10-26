@@ -274,6 +274,7 @@ tr:last-of-type {
 .button:hover {
     background-color: #dee0e2;
     border-radius: 5%;
+    cursor: default;
 }
 
 
@@ -322,4 +323,226 @@ tr:last-of-type {
     .header-title{
         display: none;
     }
+}
+
+.pdf-download-container {
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 50;
+    background-color: rgba(0, 0, 0, 0.30);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pdf-download-div {
+    background-color: #bfcede;
+    padding: 6em 4em;
+    border: 3px solid #222f3e;
+    text-align: center;
+}
+
+.downloadText {
+    font-size: 1.8em;
+}
+
+.download-pdf-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.downloadButton {
+    background-color: #222f3e;
+    color: white;
+    text-decoration: none;
+    padding: 0.5em 1.5em;
+    margin: 0 1em;
+    border: none;
+}
+
+.downloadButton:hover {
+    cursor: pointer;
+    background-color: #394d65;
+}
+
+.gone {
+    display: none;
+}
+
+.code-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 70vh;
+}
+
+.code-output-div {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+    width: 500px;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-color: #1e1e1e;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.code-output-div::-webkit-scrollbar {
+    background-color: #1e1e1e;
+}
+
+.code-output-div::-webkit-scrollbar-thumb,
+.code-output-div::-webkit-scrollbar-trackpiece {
+    background-color: #4f4f4f;
+}
+
+.code-text-div {
+    box-sizing: border-box;
+    padding: 1em;
+    width: 100%;
+}
+
+.code-output-div button {
+    width: 100%;
+    height: 5%;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.code-header-div {
+    width: 100%;
+    border-bottom: 1px solid white
+}
+
+.user-input {
+    width: 400px;
+}
+
+.text-editor-div {
+    position: relative;
+    height: 70vh;
+}
+
+.comments-div {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 0.5em;
+    width: 300px;
+    height: 95%;
+    background-color: white;
+    border-left: 1px solid #ccc;
+}
+
+.comment-div {
+    width: 100%;
+    min-height: 4em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    box-sizing: border-box;
+    margin: 0.5em 0;
+    z-index: 10;
+    background-color: #b3bbc3;
+    border-radius: 1em;
+    position: relative;
+}
+
+.comment-div:hover {
+    cursor: pointer;
+    background-color: #98a4b0;
+}
+
+.comment-div:first-of-type {
+    margin-top: 0;
+}
+
+.comment-crud-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.comment-crud-div-2 {
+    position: absolute;
+    left: 100px; right: 100px; bottom: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.crud-button {
+    background: none;
+    border: none;
+    color: #4e4e4e;
+    padding: 0 0.1em;
+}
+
+.crud-button-2 {
+    background: none;
+    border: none;
+    color: #4e4e4e;
+}
+
+.crud-button,
+.crud-button-2 {
+    cursor: pointer;
+}
+
+.crud-button i {
+    font-size: 1.2em;
+}
+
+.comment-info-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 0.5em;
+}
+
+.comment-info-text {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #4e4e4e;
+}
+
+.comment-text {
+    color: black;
+    font-size: 1em;
+}
+
+.comment-textarea {
+    resize: vertical;
+    padding-bottom: 3em;
+    min-height: 3em;
+}
+
+.dark {
+    background-color: #1e1e1e;
+    color: white;
+    border-bottom: 1px solid white;
+}
+
+.dark .button,
+.dark input,
+.dark thead tr {
+    background-color: #1e1e1e !important;
+    color: white;
+}
+
+.dark .button:hover {
+    background-color: #303030 !important;
 }

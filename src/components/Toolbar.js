@@ -1,24 +1,21 @@
 import React from 'react';
 import Button from './Button';
 import AddUser from './AddUser';
+import AddComment from './AddComment';
 
 export default function Toolbar(props) {
     return (
-        <div className="toolbar">
+        <div className={(props.editorType === 'text') ? 'toolbar' : 'toolbar dark'}>
             <div className="misc">
                 {props.buttons.misc.map(function(button, index) {
                     return Button(button, index);
                 })}
             </div>
-            {(!props.owner && props.documentId && !props.addAccessStatus) ?
+            {(props.documentId && !props.addAccessStatus && !props.addCommentStatus ) ?
                 <div className='misc'>
-                    < Button
-                        id={props.buttons.access.id}
-                        name={props.buttons.access.name}
-                        icon={props.buttons.access.icon}
-                        onClick={props.buttons.access.onClick}
-                        index={1337}
-                    />
+                    {props.buttons.access.map(function(button, index) {
+                        return Button(button, index);
+                    })}
                 </div> :
                 <></>
             }
@@ -28,6 +25,16 @@ export default function Toolbar(props) {
                         accessChange={props.accessChange}
                         addAccess={props.addAccess}
                         regretAccess={props.regretAccess}
+                    />
+                </div> :
+                <></>
+            }
+            {(props.addCommentStatus) ?
+                <div className='misc'>
+                    < AddComment
+                        commentChange={props.commentChange}
+                        addComment={props.addComment}
+                        regretComment={props.regretComment}
                     />
                 </div> :
                 <></>
