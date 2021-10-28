@@ -46,4 +46,10 @@ describe('App.js testing', () => {
 
         expect(wrapper.contains(<Toolbar />)).toBe(false);
     });
+
+
+    // Kvar att göra
+    it('Got correct header', () => {
+        
+    });
 });

@@ -10,9 +10,8 @@ export default function CodeOutput(props) {
                 <div className='code-header-div'>
                     <span className='code-header'>Output:</span>
                 </div>
-                {codeRows.map((codeRow) => {
-                    console.log(codeRow);
-                    return CodeRow({codeRow: codeRow});
+                {codeRows.map((codeRow, index) => {
+                    return CodeRow({codeRow: codeRow}, index);
                 })}
             </div>
             <button onClick={props.clear}>Clear</button>

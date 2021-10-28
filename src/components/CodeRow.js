@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function CodeRow(props) {
+export default function CodeRow(props, index) {
     return (
-        <p>- {props.codeRow}</p>
+        <p key={index}>- {props.codeRow}</p>
     );
 }

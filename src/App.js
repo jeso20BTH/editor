@@ -35,8 +35,8 @@ import apiPut from './services/api-put';
 import apiDelete from './services/api-delete';
 
 import socketIOClient from 'socket.io-client';
-// const ENDPOINT = 'https://jsramverk-editor-jeso20.azurewebsites.net';
-const ENDPOINT = 'https://localhost:1337';
+const ENDPOINT = 'https://jsramverk-editor-jeso20.azurewebsites.net';
+// const ENDPOINT = 'https://localhost:1337';
 const socket = socketIOClient(ENDPOINT);
 
 export default class App extends React.Component {
@@ -57,10 +57,10 @@ export default class App extends React.Component {
             email: null,
             name: null,
             password: null,
-            // baseurl: 'https://jsramverk-editor-jeso20.azurewebsites.net',
-            // siteUrl: '/~jeso20/editor',
-            baseurl: 'http://localhost:1337',
-            siteUrl: '',
+            baseurl: 'https://jsramverk-editor-jeso20.azurewebsites.net',
+            siteUrl: '/~jeso20/editor',
+            // baseurl: 'http://localhost:1337',
+            // siteUrl: '',
             docTitle: '',
             documentId: null,
             status: 'documents gone',
@@ -88,7 +88,9 @@ export default class App extends React.Component {
     textChange = async () => {
         socket.emit('editor', {
             _id: this.state.documentId,
-            text: this.editorRef.current.getContent()
+            text: (this.state.editorType === 'text') ?
+                this.editorRef.current.getContent() :
+                this.codeEditorRef.current.getValue()
         });
 
         let changeComments = false;
@@ -113,9 +115,7 @@ export default class App extends React.Component {
 
         await this.state.comments.map(async (comment) => {
             if (!commentsNumber.includes(`${comment.number}`)) {
-                console.log('remove');
                 changeComments = true;
-                console.log(changeComments);
 
                 let body = {
                     _id: this.state.userId,
@@ -134,7 +134,6 @@ export default class App extends React.Component {
             }
 
             if (changeComments) {
-                console.log('get comments');
                 await this.getComments();
 
                 changeComments = false;
@@ -151,12 +150,8 @@ export default class App extends React.Component {
                 that.codeEditorRef.current.getValue() :
                 '';
 
-        console.log(text);
-
         if ((that.editorRef.current || that.codeEditorRef) && that.state.userId) {
-            console.log();
             if (that.state.documentId) {
-                console.log(that.state.ownerId);
                 let body = {
                     _id: that.state.ownerId || that.state.userId,
                     documentId: that.state.documentId,
@@ -164,8 +159,6 @@ export default class App extends React.Component {
                     html: text,
                     type: that.state.editorType
                 };
-
-                console.log(body);
 
                 await apiPut(
                     `${that.state.baseurl}/db/document/update`,
@@ -271,8 +264,6 @@ export default class App extends React.Component {
             that.state.token
         );
 
-        console.log(response.data.documents);
-
         that.setState({
             status: 'documents',
             documents: response.data.documents,
@@ -306,11 +297,9 @@ export default class App extends React.Component {
         if (that.editorRef.current && doc.type === 'text') {
             that.editorRef.current.setContent((doc.html) ? doc.html : '');
         } else if (that.codeEditorRef.current && doc.type === 'code') {
-            console.log('code');
             that.codeEditorRef.current.setValue(doc.html);
         }
 
-        console.log(doc.html);
         let commentNumber = 1;
 
         if (doc.comments) {
@@ -324,9 +313,6 @@ export default class App extends React.Component {
             }
         }
 
-
-        console.log(commentNumber);
-
         that.setState({
             status: 'documents gone',
             documentId: doc._id,
@@ -334,7 +320,8 @@ export default class App extends React.Component {
             ownerId: doc.owner || null,
             editorType: doc.type,
             comments: doc.comments || [],
-            commentCounter: commentNumber
+            commentCounter: commentNumber,
+            codeOutput: ''
         });
         socket.emit('create', {
             newId: that.state.documentId,
@@ -471,6 +458,7 @@ export default class App extends React.Component {
         that.setState({
             editorType: newType,
             docTitle: '',
+            codeOutput: '',
             documentId: null,
             status: 'documents gone'
         });
@@ -656,13 +644,11 @@ export default class App extends React.Component {
             server: window.location.origin
         };
 
-        let message = await apiPost(
+        await apiPost(
             `${that.state.baseurl}/mail`,
             body,
             that.state.token,
         );
-
-        console.log(message);
 
         that.setState({
             ownerId: null,
@@ -682,7 +668,6 @@ export default class App extends React.Component {
     }
 
     getComments = async () => {
-        console.log('Will get comments');
         let body = JSON.stringify({
             query: `{
                 comments (
@@ -698,19 +683,13 @@ export default class App extends React.Component {
             }`
         });
 
-        console.log(body);
-
         let response = await apiPost(
             `${this.state.baseurl}/graphql`,
             body,
             this.state.token
         );
 
-        console.log(response.data.comments);
-
         this.setState({comments: response.data.comments});
-
-        console.log(this.state.comments);
     }
 
     addComment = async () => {
@@ -723,7 +702,6 @@ export default class App extends React.Component {
             `${curId}-${this.state.commentCounter}` :
             `comment-${this.state.commentCounter}`;
 
-        console.log(curId);
         this.editorRef.current.dom.setAttrib(
             this.editorRef.current.selection.getNode(),
             'id',
@@ -778,10 +756,6 @@ export default class App extends React.Component {
             'material-icons-outlined'
         ];
 
-        console.log(!noHighlight.includes(target.className));
-
-        console.log(target.className);
-
         if (!noHighlight.includes(target.className)) {
             while (target.className !== 'comment-div') {
                 target = target.parentElement;
@@ -816,9 +790,14 @@ export default class App extends React.Component {
     }
 
     deleteComment = async (e) => {
-        let deleteId = e.target.parentElement.parentElement.id.split('-');
+        let parent = e.target;
 
-        console.log(deleteId);
+        while (parent.className !== 'comment-div') {
+            parent = parent.parentElement;
+        }
+
+        let deleteId = parent.id.split('-');
+
         let doc = this.editorRef.current.dom.getRoot();
 
         let tempId = '';
@@ -860,6 +839,7 @@ export default class App extends React.Component {
         }
 
 
+
         let body = {
             _id: this.state.userId,
             documentId: this.state.documentId,
@@ -884,7 +864,7 @@ export default class App extends React.Component {
         while (parent.className !== 'comment-div') {
             parent = parent.parentElement;
         }
-        console.log(parent.children[1].innerHTML);
+
         this.setState({
             editComment: {
                 id: parent.id.split('-'),
@@ -900,7 +880,6 @@ export default class App extends React.Component {
 
 
     saveUpdatedComment = async () => {
-        // console.log(this.state);
         let commentId = this.state.editComment.id[0];
 
         let body = {

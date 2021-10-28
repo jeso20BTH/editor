@@ -1,11 +1,6 @@
 import React from 'react';
 
 export default function Comment(props) {
-    // let commentId = 'comment';
-    console.log(props.editComment);
-    if (props.editComment) {
-        console.log(props.editComment.id[0] === props._id);
-    }
     return (
         <div
             key={props._id}
@@ -36,7 +31,7 @@ export default function Comment(props) {
                 <span className='comment-text'>{props.text}</span> :
                 <>
                     <textarea
-                        class='comment-textarea'
+                        className='comment-textarea'
                         value={(props.editComment.newText) ?
                             props.editComment.newText :
                             props.editComment.initText

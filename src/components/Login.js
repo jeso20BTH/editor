@@ -5,10 +5,15 @@ import {
 } from 'react-router-dom';
 
 export default function Login(props) {
-    const search = useLocation().search;
+    let host = window.location.host;
+    let port = window.location.port
+    console.log((host === 'localhost' && port) || host !== 'localhost');
+    let email;
+    if ((host === 'localhost' && port) || host !== 'localhost') {
+        const search = useLocation().search;
 
-    const email = new URLSearchParams(search).get('email');
-
+        email = new URLSearchParams(search).get('email');
+    }
     return (
         <div className='formdiv'>
             <form>
