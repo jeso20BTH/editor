@@ -14,7 +14,7 @@ before_script:
     - npm install
 
 script:
-    - npm test -- --watchAll=false
+    - npm test -- --watchAll=false --forceExit
 
 after_success:
     - npm run report-coveralls
