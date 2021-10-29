@@ -36,7 +36,7 @@ describe('App.js testing', () => {
         // we can do our UI check
         let anchor = button.find('a');
 
-        expect(anchor.props().href).toEqual('/~jeso20/editor/login');
+        expect(anchor.props().href).toEqual('#/login');
 
         // expect(dataRow.find('td').at(0).text()).toEqual('test');
     });
@@ -45,11 +45,5 @@ describe('App.js testing', () => {
         const wrapper = mount((<App />));
 
         expect(wrapper.contains(<Toolbar />)).toBe(false);
-    });
-
-
-    // Kvar att göra
-    it('Got correct header', () => {
-        
     });
 });
