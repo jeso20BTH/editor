@@ -5,15 +5,12 @@ import {
 } from 'react-router-dom';
 
 export default function Login(props) {
-    let host = window.location.host;
-    let port = window.location.port
-    console.log((host === 'localhost' && port) || host !== 'localhost');
-    let email;
-    if ((host === 'localhost' && port) || host !== 'localhost') {
-        const search = useLocation().search;
+    const search = useLocation().search;
 
-        email = new URLSearchParams(search).get('email');
-    }
+    const email = new URLSearchParams(search).get('email');
+
+    props.setQueryEmail(email);
+
     return (
         <div className='formdiv'>
             <form>
@@ -29,11 +26,11 @@ export default function Login(props) {
                 <div className='formrow'>
                     <input type='password' placeholder='Password' onChange={props.passwordChange}/>
                 </div>
-                <Link to={`${props.siteUrl}/`}>
+                <Link to='/'>
                     <input className='btn' type='submit' value='Login' onClick={props.login}/>
                 </Link>
             </form>
-            <Link to={`${props.siteUrl}/register`}>Not an user? register here</Link>
+            <Link to='/register'>Not an user? register here</Link>
         </div>
     );
 }

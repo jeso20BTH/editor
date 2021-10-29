@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
     Link,
-    Redirect
+    Redirect,
+    // useLocation
 } from 'react-router-dom';
 
 import { Editor } from '@tinymce/tinymce-react';
@@ -55,6 +56,7 @@ export default class App extends React.Component {
             addComment: null,
             auth: false,
             email: null,
+            queryEmail: null,
             name: null,
             password: null,
             baseurl: 'https://jsramverk-editor-jeso20.azurewebsites.net',
@@ -532,7 +534,7 @@ export default class App extends React.Component {
             });
             buttons.access.push({
                 name: 'Comment',
-                icon: 'picture_as_pdf',
+                icon: 'notes',
                 onClick: this.getCommentDocument,
                 id: 'comment-btn'
             });
@@ -577,6 +579,12 @@ export default class App extends React.Component {
         this.setState({editComment: editComment});
     }
 
+    setQueryEmail = (email) => {
+        if (!this.state.queryEmail && email) {
+            this.setState({queryEmail: email});
+        }
+    }
+
     login = async () => {
         let that = this;
 
@@ -585,6 +593,10 @@ export default class App extends React.Component {
             password: that.state.password
         };
 
+        if (!body.email) {
+            body.email = that.state.queryEmail;
+        }
+
         let response = await apiPost(`${that.state.baseurl}/auth/login`, body);
 
         if (response.success) {
@@ -592,6 +604,7 @@ export default class App extends React.Component {
                 auth: true,
                 password: null,
                 email: null,
+                queryEmail: null,
                 name: response.name,
                 token: response.token,
                 userId: response.userId
@@ -602,19 +615,26 @@ export default class App extends React.Component {
     register = async () => {
         let that = this;
 
+        let email = (that.state.email) ? that.state.email : that.state.queryEmail;
+
         let body = {
             name: that.state.name,
-            email: that.state.email,
+            email: email,
             password: that.state.password
         };
 
+        console.log(body);
+
         let response = await apiPost(`${that.state.baseurl}/auth/register`, body);
+
+        console.log(response);
 
         if (response.success) {
             that.setState({
                 auth: true,
                 password: null,
                 email: null,
+                queryEmail: null,
                 name: response.name,
                 token: response.token,
                 userId: response.userId
@@ -641,7 +661,7 @@ export default class App extends React.Component {
             to: that.state.addEmail,
             user: that.state.name,
             title: that.state.docTitle,
-            server: window.location.origin
+            server: `${window.location.origin}${that.state.siteUrl}/#`
         };
 
         await apiPost(
@@ -1046,7 +1066,7 @@ export default class App extends React.Component {
                 <Router>
                     <div className='header'>
                         <Link
-                            to={`${this.state.siteUrl}/`}
+                            to={'/'}
                             className='header-title'
                         >
                             Editor of the people
@@ -1070,7 +1090,7 @@ export default class App extends React.Component {
                     </div>
                     <div className='container'>
                         <Switch>
-                            <Route path={`${this.state.siteUrl}/login`}>
+                            <Route exact path={'/login'}>
                                 <Login
                                     auth={this.state.auth}
                                     login={this.login}
@@ -1078,9 +1098,10 @@ export default class App extends React.Component {
                                     emailChange={this.emailChange}
                                     passwordChange={this.passwordChange}
                                     siteUrl={this.state.siteUrl}
+                                    setQueryEmail={this.setQueryEmail}
                                 />
                             </Route>
-                            <Route path={`${this.state.siteUrl}/register`}>
+                            <Route path={'/register'}>
                                 <Register
                                     auth={this.state.auth}
                                     register={this.register}
@@ -1089,15 +1110,17 @@ export default class App extends React.Component {
                                     emailChange={this.emailChange}
                                     passwordChange={this.passwordChange}
                                     siteUrl={this.state.siteUrl}
+                                    setQueryEmail={this.setQueryEmail}
                                 />
                             </Route>
-                            <Route path={`${this.state.siteUrl}/logout`} render={() => (
+                            <Route path={'/logout'} render={() => (
                                 this.setState({
                                     auth: false,
                                     documents: {
                                         owner: [],
                                         access: []
                                     },
+                                    comments: [],
                                     userId: null,
                                     ownerId: null,
                                     addAccessStatus: false,
@@ -1109,10 +1132,10 @@ export default class App extends React.Component {
                                     documentId: null,
                                     status: 'documents gone',
                                 }),
-                                <Redirect to={`${this.state.siteUrl}/`}
+                                <Redirect to={'/'}
                                 />)
                             }/>
-                            <Route path={`${this.state.siteUrl}/documents`}>
+                            <Route path={'/documents'}>
                                 <AddAccess
                                     accessChange={this.accessChange}
                                     addAccess={this.addAccess}

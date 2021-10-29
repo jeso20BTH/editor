@@ -9,6 +9,8 @@ export default function Register(props) {
 
     const email = new URLSearchParams(search).get('email');
 
+    props.setQueryEmail(email);
+
     return (
         <div className='formdiv'>
             <form>
@@ -27,7 +29,7 @@ export default function Register(props) {
                 <div className='formrow'>
                     <input type='password' placeholder='Password' onChange={props.passwordChange}/>
                 </div>
-                <Link to={`${props.siteUrl}/`}>
+                <Link to='/'>
                     <input
                         className='btn'
                         type='submit'
@@ -36,7 +38,7 @@ export default function Register(props) {
                     />
                 </Link>
             </form>
-            <Link to={`${props.siteUrl}/login`}>Already registered? login here</Link>
+            <Link to='/login'>Already registered? login here</Link>
         </div>
     );
 }

@@ -16,7 +16,7 @@ export default function LogoutLink(props) {
             </div>
 
 
-            <Link to={`${props.siteUrl}/logout`} className='link'>
+            <Link to='/logout' className='link'>
                 <button className='nav-button'>
                     <div className='center-column'>
                         <p>Logout</p>

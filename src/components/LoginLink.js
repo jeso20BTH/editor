@@ -3,11 +3,11 @@ import {
     Link
 } from 'react-router-dom';
 
-export default function LoginLink(props) {
+export default function LoginLink() {
     return (
         <Link
             className="link"
-            to={`${props.siteUrl}/login`}
+            to='/login'
         >
             <button className='nav-button' id='login-link-btn'>
                 <div className='center-column'>
